@@ -1,17 +1,16 @@
-# Use a lightweight OpenJDK runtime image
-FROM openjdk:22-slim
-
-# Set working directory inside container
+# Stage 1: Compile the application using the JDK image
+FROM eclipse-temurin:21 AS builder
 WORKDIR /app
-
-# Copy the source code and web pages into the container
 COPY src /app/src
-COPY web /app/web
-
-# Create class destination directory and compile source files
 RUN mkdir bin && javac -d bin src/com/globalexchange/service/ExchangeRateService.java src/com/globalexchange/server/ExchangeServer.java
 
-# Expose default port (Render/Koyeb inject their own, handled dynamically by system environment variables)
+# Stage 2: Run the application using the lightweight JRE image
+FROM eclipse-temurin:21-jre
+WORKDIR /app
+COPY --from=builder /app/bin /app/bin
+COPY web /app/web
+
+# Expose default port
 EXPOSE 8080
 
 # Command to execute the application
