@@ -1,0 +1,17 @@
+# Compiled class files
+bin/
+*.class
+
+# IDE and Editor files
+.project
+.classpath
+.settings/
+.idea/
+*.iml
+.vscode/
+
+# Local task logs and system artifacts
+*.log
+.system_generated/
+.gemini/
+/GlobalExchange_temp/

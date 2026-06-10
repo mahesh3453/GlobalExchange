@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GlobalExchange - Modern Currency Converter</title>
+    <meta name="description" content="A simple, fast, and beautiful currency converter dashboard with real-time rates. Suitable for college mini-projects.">
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="app-container">
+        <!-- Header -->
+        <header class="app-header">
+            <div class="logo-area">
+                <svg class="logo-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="22" stroke-linecap="round" stroke-linejoin="round">
+                    <circle cx="12" cy="12" r="10" stroke-width="2"></circle>
+                    <line x1="2" y1="12" x2="22" y2="12" stroke-width="2"></line>
+                    <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z" stroke-width="2"></path>
+                </svg>
+                <div class="logo-text">
+                    <h1>GlobalExchange</h1>
+                    <p>Real-Time Currency Dashboard</p>
+                </div>
+            </div>
+            <div class="header-right">
+                <!-- Theme Switcher -->
+                <div class="theme-switcher" id="theme-switcher">
+                    <button class="theme-btn" data-theme="dark" title="Dark Theme" aria-label="Switch to dark theme">
+                        <svg class="theme-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+                        </svg>
+                    </button>
+                    <button class="theme-btn" data-theme="light" title="Light Theme" aria-label="Switch to light theme">
+                        <svg class="theme-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <circle cx="12" cy="12" r="5"></circle>
+                            <line x1="12" y1="1" x2="12" y2="3"></line>
+                            <line x1="12" y1="21" x2="12" y2="23"></line>
+                            <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+                            <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+                            <line x1="1" y1="12" x2="3" y2="12"></line>
+                            <line x1="21" y1="12" x2="23" y2="12"></line>
+                            <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+                            <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+                        </svg>
+                    </button>
+                    <button class="theme-btn" data-theme="blue" title="Blue Theme" aria-label="Switch to blue theme">
+                        <svg class="theme-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <circle cx="12" cy="12" r="10"></circle>
+                            <line x1="2" y1="12" x2="22" y2="12"></line>
+                            <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path>
+                        </svg>
+                    </button>
+                </div>
+                <div class="last-updated-card">
+                    <span class="status-indicator"></span>
+                    <div class="time-info">
+                        <span class="label">Rates updated:</span>
+                        <span id="last-updated-time" class="time-value">Loading...</span>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <!-- Main Dashboard Layout -->
+        <main class="dashboard-grid">
+            <!-- Left Side: Converter and Currency Info -->
+            <section class="dashboard-left">
+                <!-- Converter Card -->
+                <div class="glass-card converter-card">
+                    <div class="card-header">
+                        <h2>Currency Converter</h2>
+                        <span class="badge">Live</span>
+                    </div>
+                    <div class="converter-inputs">
+                        <div class="input-group">
+                            <label for="amount">Amount</label>
+                            <div class="amount-input-wrapper">
+                                <span class="input-currency-symbol" id="source-symbol">$</span>
+                                <input type="number" id="amount" value="1.00" min="0" step="any" placeholder="Enter amount">
+                            </div>
+                        </div>
+
+                        <div class="currency-selectors">
+                            <div class="selector-group">
+                                <label for="source-currency">From</label>
+                                <select id="source-currency">
+                                    <option value="USD" selected>USD - US Dollar</option>
+                                    <!-- Populated dynamically -->
+                                </select>
+                            </div>
+
+                            <button id="swap-btn" class="swap-button" title="Swap Currencies" aria-label="Swap currencies">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <path d="M7 16V4M7 4L3 8M7 4l4 4M17 8v12M17 20l-4-4M17 20l4-4"></path>
+                                </svg>
+                            </button>
+
+                            <div class="selector-group">
+                                <label for="target-currency">To</label>
+                                <select id="target-currency">
+                                    <option value="INR" selected>INR - Indian Rupee</option>
+                                    <!-- Populated dynamically -->
+                                </select>
+                            </div>
+                        </div>
+
+                        <button id="convert-btn" class="primary-btn">
+                            <span>Convert Currency</span>
+                            <svg class="btn-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <line x1="5" y1="12" x2="19" y2="12"></line>
+                                <polyline points="12 5 19 12 12 19"></polyline>
+                            </svg>
+                        </button>
+                    </div>
+
+                    <!-- Result Panel -->
+                    <div class="conversion-result-panel" id="result-panel">
+                        <div class="rate-formula" id="rate-formula">1 USD = 83.50 INR</div>
+                        <div class="result-display">
+                            <span class="source-display" id="source-display">1.00 USD =</span>
+                            <span class="target-display" id="target-display">83.50 INR</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Currency Info Panel -->
+                <div class="glass-card info-card">
+                    <div class="card-header">
+                        <h2>Currency Details</h2>
+                        <svg class="header-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <circle cx="12" cy="12" r="10"></circle>
+                            <line x1="12" y1="16" x2="12" y2="12"></line>
+                            <line x1="12" y1="8" x2="12.01" y2="8"></line>
+                        </svg>
+                    </div>
+                    <div class="info-grid">
+                        <div class="info-block">
+                            <span class="info-label">From Currency</span>
+                            <div class="info-data">
+                                <span class="info-code" id="info-source-code">USD</span>
+                                <span class="info-symbol" id="info-source-symbol">$</span>
+                            </div>
+                            <span class="info-name" id="info-source-name">US Dollar</span>
+                        </div>
+                        <div class="info-divider">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <polyline points="9 18 15 12 9 6"></polyline>
+                            </svg>
+                        </div>
+                        <div class="info-block">
+                            <span class="info-label">To Currency</span>
+                            <div class="info-data">
+                                <span class="info-code" id="info-target-code">INR</span>
+                                <span class="info-symbol" id="info-target-symbol">₹</span>
+                            </div>
+                            <span class="info-name" id="info-target-name">Indian Rupee</span>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Right Side: Popular Rates and Quick Convert Cards -->
+            <section class="dashboard-right">
+                <!-- Popular Rates Card -->
+                <div class="glass-card popular-rates-card">
+                    <div class="card-header">
+                        <h2>Popular Exchange Rates</h2>
+                        <span id="popular-base-badge" class="badge secondary">Base: USD</span>
+                    </div>
+                    <div class="rates-list-container">
+                        <div class="table-header">
+                            <span>Currency</span>
+                            <span>Rate</span>
+                            <span>Equiv (1 Unit)</span>
+                        </div>
+                        <div id="popular-rates-list" class="rates-list">
+                            <!-- Populated dynamically -->
+                            <div class="rate-row-skeleton"></div>
+                            <div class="rate-row-skeleton"></div>
+                            <div class="rate-row-skeleton"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Quick Convert Cards -->
+                <div class="quick-convert-container">
+                    <h3>Quick Conversion Cards</h3>
+                    <div class="quick-cards-grid">
+                        <div class="quick-card" data-from="USD" data-to="INR">
+                            <div class="card-arrow">
+                                <span class="q-from">USD</span>
+                                <span class="arrow">→</span>
+                                <span class="q-to">INR</span>
+                            </div>
+                            <span class="q-label">US Dollar to Rupee</span>
+                        </div>
+                        <div class="quick-card" data-from="INR" data-to="USD">
+                            <div class="card-arrow">
+                                <span class="q-from">INR</span>
+                                <span class="arrow">→</span>
+                                <span class="q-to">USD</span>
+                            </div>
+                            <span class="q-label">Rupee to US Dollar</span>
+                        </div>
+                        <div class="quick-card" data-from="EUR" data-to="INR">
+                            <div class="card-arrow">
+                                <span class="q-from">EUR</span>
+                                <span class="arrow">→</span>
+                                <span class="q-to">INR</span>
+                            </div>
+                            <span class="q-label">Euro to Rupee</span>
+                        </div>
+                        <div class="quick-card" data-from="GBP" data-to="INR">
+                            <div class="card-arrow">
+                                <span class="q-from">GBP</span>
+                                <span class="arrow">→</span>
+                                <span class="q-to">INR</span>
+                            </div>
+                            <span class="q-label">Pound to Rupee</span>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </main>
+
+        <footer class="app-footer">
+            <p>&copy; 2026 GlobalExchange. Designed By Durgesh Devkar.</p>
+        </footer>
+    </div>
+    
+    <script src="app.js"></script>
+</body>
+</html>
